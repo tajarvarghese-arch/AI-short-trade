@@ -11,7 +11,7 @@ Seeded from IBKR snapshots on 2026-09-02: spot, 30-day implied vol, 52-week IV p
 
 ## Run it
 
-Open `index.html` in a browser. No build, no dependencies. To host it, enable GitHub Pages on this repository (Settings, Pages, deploy from branch `main`, root) or let the included workflow publish it.
+Open `index.html` in a browser. `vol.html` is a companion page: live SMH and NVDA put implied vols from IBKR on 2026-09-02 against the model, term structure across four expiries, and a year of VXN, VIX, realised vol and SKEW history. No build, no dependencies. To host it, enable GitHub Pages on this repository (Settings, Pages, deploy from branch `main`, root) or let the included workflow publish it.
 
 ## Model notes
 
