@@ -3,123 +3,129 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="theme-color" content="#0b0e12" />
+<meta name="theme-color" content="#05080b" />
 <meta name="robots" content="noindex" />
 <title>AI Complex Vol Surface</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700;1,800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/hud.css" />
 <style>
-  :root {
-    --bg: #0b0e12; --surface: #13171d; --surface-2: #1a1f27; --line: #262c36; --line-2: #333b47;
-    --ink: #e8ebef; --ink-2: #aab2be; --ink-3: #6f7986;
-    --green: #21d07a; --green-dim: rgba(33,208,122,.14); --amber: #f5b83d; --amber-dim: rgba(245,184,61,.14);
-    --red: #ff5d5d; --red-dim: rgba(255,93,93,.14); --blue: #5aa9ff; --blue-dim: rgba(90,169,255,.14);
-    --display: 'Barlow Condensed', Impact, 'Arial Narrow', sans-serif; --body: Inter, system-ui, sans-serif; --mono: 'IBM Plex Mono', ui-monospace, monospace;
-  }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 14px; font-variant-numeric: tabular-nums; }
-  a { color: var(--green); }
-  .wrap { max-width: 1280px; margin: 0 auto; padding: 24px 20px 80px; }
-  h1 { font-family: var(--display); font-style: italic; font-weight: 800; text-transform: uppercase; font-size: 44px; letter-spacing: .01em; margin: 0; line-height: 1; }
-  h1 span { color: var(--green); }
-  h2 { font-family: var(--display); font-style: italic; font-weight: 700; text-transform: uppercase; font-size: 22px; margin: 0 0 4px; letter-spacing: .02em; }
-  h3 { font-family: var(--display); font-weight: 700; text-transform: uppercase; font-size: 16px; letter-spacing: .04em; margin: 0 0 6px; color: var(--ink-2); }
-  .sub { color: var(--ink-2); margin: 6px 0 0; max-width: 820px; line-height: 1.5; }
-  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; margin-top: 18px; }
-  .panel .sub { margin-bottom: 14px; font-size: 13px; }
-  .verdict { border-color: rgba(33,208,122,.35); background: linear-gradient(180deg, rgba(33,208,122,.08), transparent 60%); }
-  .verdict p { font-size: 16px; line-height: 1.55; max-width: 900px; margin: 8px 0 0; }
-  .verdict b { color: var(--green); }
-  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-top: 14px; }
-  .kpi { background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; }
-  .kpi .l { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-3); font-weight: 600; }
-  .kpi .v { font-family: var(--display); font-style: italic; font-weight: 700; font-size: 30px; line-height: 1.1; margin-top: 4px; }
-  .kpi .v.g { color: var(--green); } .kpi .v.a { color: var(--amber); } .kpi .v.r { color: var(--red); } .kpi .v.b { color: var(--blue); }
-  .kpi .s { color: var(--ink-2); font-size: 12px; margin-top: 2px; line-height: 1.4; }
-  .grid { display: grid; gap: 14px; }
-  .g2 { grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); }
-  .chart { background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 12px 12px 8px; }
-  .chart svg { display: block; width: 100%; height: auto; }
-  svg text { font-family: var(--mono); font-size: 11px; fill: var(--ink-3); }
-  svg text.lab { fill: var(--ink-2); }
-  .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--ink-2); margin-top: 8px; }
-  .legend i { display: inline-block; width: 18px; height: 3px; vertical-align: middle; margin-right: 6px; border-radius: 2px; }
-  .legend i.dash { background: repeating-linear-gradient(90deg, currentColor 0 4px, transparent 4px 7px); height: 2px; }
-  table.out { width: 100%; border-collapse: collapse; font-size: 13px; }
-  table.out th, table.out td { padding: 7px 8px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
-  table.out th { color: var(--ink-3); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
-  table.out th:first-child, table.out td:first-child { text-align: left; }
-  table.out td.l { text-align: left; }
-  .scroll { overflow-x: auto; }
-  .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
-  .pill.g { background: var(--green-dim); color: var(--green); } .pill.a { background: var(--amber-dim); color: var(--amber); } .pill.r { background: var(--red-dim); color: var(--red); } .pill.b { background: var(--blue-dim); color: var(--blue); }
-  .note { background: var(--amber-dim); border: 1px solid rgba(245,184,61,.35); border-radius: 8px; padding: 12px 14px; color: var(--ink); line-height: 1.5; margin-top: 14px; }
-  .note b { color: var(--amber); }
-  .muted { color: var(--ink-3); } .mono { font-family: var(--mono); }
-  ul { line-height: 1.6; color: var(--ink-2); padding-left: 20px; }
-  ul b { color: var(--ink); }
-  @media (max-width: 700px) { h1 { font-size: 34px; } .wrap { padding: 16px 12px 60px; } .g2 { grid-template-columns: 1fr; } }
+  :root { --green: var(--g); --amber: var(--a); --blue: var(--b); --red: var(--r); --ink-2: var(--ink2); --ink-3: var(--ink3); --bg: var(--bg0); }
+  .hero { position: relative; padding: 34px 0 6px; }
+  .verdict { border-color: var(--g-line); background: linear-gradient(180deg, rgba(45, 255, 160, .08), transparent 55%), var(--bg1); }
+  .verdict p { font-size: 16px; line-height: 1.6; max-width: 940px; margin: 4px 0 0; color: var(--ink); }
+  .verdict p b { color: var(--g); }
+  .verdict .kpis { margin-top: 16px; }
+  .stage.volsurf { height: 560px; }
+  .hud.tl .hudbox { width: 300px; }
+  .hud.tr .hudbox { width: 290px; }
+  .desks.small button { padding: 7px 14px; font-size: 12px; }
+  .desks.small button.on.second { background: var(--b); }
+  .mobile-card { display: none; margin-top: 10px; }
+  .g2c { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 14px; }
+  .reading { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-top: 14px; }
+  .reading .inset p { margin: 0; font-size: 13px; line-height: 1.5; color: var(--ink2); }
+  .reading .inset .t { font-family: var(--mono); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--g); margin-bottom: 6px; }
+  .reading .inset .t.b { color: var(--b); } .reading .inset .t.a { color: var(--a); }
+  .reading .inset p b { color: var(--ink); }
+  ul.verdicts { columns: 2; column-gap: 28px; }
+  ul.verdicts li { break-inside: avoid; margin-bottom: 8px; }
+  @media (max-width: 1000px) { ul.verdicts { columns: 1; } }
+  @media (max-width: 760px) { .stage.volsurf { height: 430px; } .hud.tl, .hud.tr, .hud.br { display: none; } .hud.bl { left: 12px; right: 12px; bottom: 12px; } .hud.bl .hudbox { width: auto; } .mobile-card { display: block; } .g2c { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
+<div class="atmo"><div class="grid"></div><div class="glow"></div><div class="glow b"></div><div class="scan"></div><div class="noise"></div></div>
 <div class="wrap">
-  <header>
-    <h1>AI Complex <span>Vol Surface</span></h1>
-    <p class="sub"><a href="index.html">&larr; Put Desk</a>. Companion page. Live SMH and NVDA put quotes from IBKR on 2 September 2026, converted to implied vols, laid against the desk's pricing model and against a year of vol history. Answers one question: are these puts expensive right now, or do they just feel that way?</p>
+  <div class="topbar reveal">
+    <a class="brand" href="index.html"><i></i>AI Complex // Put Desk</a>
+    <span class="sep"></span><span class="live">Snapshot 2026-09-02</span>
+    <span class="sep hm"></span><span class="hm">IBKR pulls · skew-calibrated BS</span>
+    <span class="spacer"></span>
+    <nav><a href="index.html">Desk</a><a href="vol.html" class="on">Vol surface</a></nav>
+  </div>
+
+  <header class="hero reveal d1">
+    <div class="scanline"></div>
+    <h1><small>Companion page // are these puts expensive?</small>AI Complex<br><span>Vol Surface</span></h1>
+    <p class="sub">Live SMH and NVDA put quotes from IBKR on 2 September 2026, converted to implied vols, laid against the desk's pricing model and against a year of vol history. One question: are these puts expensive right now, or do they just feel that way?</p>
+    <div class="tape"><span><b>SMH</b> IV30 32.5 · RV30 42.8 · 25th pct</span><span><b>NVDA</b> IV30 31.7 · RV30 39.4 · 1st pct</span><span><b>VXN</b> 21.96 · 35th pct</span><span><b>SKEW</b> near 1y median</span><span><a href="index.html">&larr; Back to the desk</a></span></div>
   </header>
 
-  <section class="panel verdict">
-    <h2>Verdict</h2>
+  <div class="sec reveal d2"><span class="idx">01</span><h2>Verdict</h2><span class="rule"></span><span class="tag">as of 2 Sep 2026</span></div>
+  <section class="panel verdict reveal d2">
     <p id="verdict"></p>
     <div class="kpis" id="kpis"></div>
   </section>
 
+  <div class="sec reveal d3"><span class="idx">02</span><h2>The surface, model against market</h2><span class="rule"></span><span class="tag">strike × tenor × implied vol</span></div>
+  <section class="panel reveal d3">
+    <p class="sub">The sheet is the desk's model: implied vol across strike and tenor, built from one 30-day number, a skew slope and a term exponent. Every sphere is a live mid converted to implied vol. A green sphere sits below the sheet, where the market is cheaper than the model and the desk's premium estimate is conservative. A red sphere sits above it, where the desk is too optimistic. The drop line is the gap in vol points.</p>
+    <div class="stage volsurf" id="volStage">
+      <canvas></canvas>
+      <div class="hud tl"><div class="hudbox">
+        <div class="t">Model vs market</div>
+        <p id="volIntro" style="margin-top:0"></p>
+        <div class="leg3d" style="flex-direction:column;gap:5px;margin-top:8px"><span><i style="background:linear-gradient(90deg,#0d5a6b,#2dffa0,#ff4d6a)"></i>Model sheet, colour = IV level</span><span><i class="dot" style="background:var(--g)"></i>Market below model (desk conservative)</span><span><i class="dot" style="background:var(--r)"></i>Market above model (desk optimistic)</span><span><i style="background:var(--a)"></i>Listed expiries</span></div>
+      </div></div>
+      <div class="hud tr"><div class="hudbox" id="volCard"></div></div>
+      <div class="hud bl"><div class="hudbox stagectl" style="gap:10px"><div class="desks small" id="volName"><button data-n="SMH" class="on">SMH</button><button data-n="NVDA" class="second">NVDA</button></div><button class="ghost small" id="volReset">Reset view</button></div></div>
+      <div class="hud br"><div class="hint keys">drag to orbit · scroll to zoom · click a sphere</div></div>
+    </div>
+    <div class="hudbox mobile-card" id="volCardMobile"></div>
+    <div class="reading">
+      <div class="inset"><div class="t">SMH</div><p><b>The model runs rich.</b> Across the December smile the market sits 1.5 to 2 vol points under the sheet, so the desk's SMH premiums are roughly 10 to 15 percent conservative. Sizing off the model leaves money on the table, not the other way round.</p></div>
+      <div class="inset"><div class="t b">NVDA</div><p><b>Within a vol point everywhere.</b> The fit is tight from at the money to 20 percent out. Model prices for NVDA structures can be used as they are, with the usual bid-ask haircut.</p></div>
+      <div class="inset"><div class="t a">Tenor</div><p><b>The 20 percent strike is flat in time.</b> Along the tenor axis the far strike barely rises from October to June, which is why longer-dated cover costs so little extra per day. At the money, vol rises with tenor.</p></div>
+    </div>
+  </section>
+
+  <div class="sec"><span class="idx">03</span><h2>Today's smile, December 2026 puts</h2><span class="rule"></span><span class="tag">107 days</span></div>
   <section class="panel">
-    <h2>Today's smile, December 2026 puts</h2>
     <p class="sub">Each dot is a live mid converted to Black-Scholes implied vol. The whisker is the bid-ask in vol terms. The dashed amber line is what the Put Desk's model assumes. Where the dot sits below the dashed line, the desk is overpaying in its estimate; where it sits above, the desk is too optimistic.</p>
-    <div class="grid g2">
-      <div class="chart"><h3>SMH, spot 541.77, 107 days</h3><div id="smileSMH"></div></div>
-      <div class="chart"><h3>NVDA, spot 216.78, 107 days</h3><div id="smileNVDA"></div></div>
+    <div class="g2c">
+      <div class="chart"><h3 style="margin-top:0">SMH, spot 541.77, 107 days</h3><div id="smileSMH"></div></div>
+      <div class="chart"><h3 style="margin-top:0">NVDA, spot 216.78, 107 days</h3><div id="smileNVDA"></div></div>
     </div>
-    <div class="legend"><span><i style="background:var(--green)"></i>SMH market IV (mid)</span><span><i style="background:var(--blue)"></i>NVDA market IV (mid)</span><span><i class="dash" style="color:var(--amber)"></i>Put Desk model IV</span><span><i style="background:var(--ink-3);height:1px"></i>Bid-ask range in vol</span></div>
+    <div class="legend"><span><i style="background:var(--g)"></i>SMH market IV (mid)</span><span><i style="background:var(--b)"></i>NVDA market IV (mid)</span><span><i class="dash" style="color:var(--a)"></i>Put Desk model IV</span><span><i style="background:var(--ink3);height:1px"></i>Bid-ask range in vol</span></div>
   </section>
 
+  <div class="sec"><span class="idx">04</span><h2>Term structure, three strikes across four expiries</h2><span class="rule"></span><span class="tag">Oct · Dec · Mar · Jun</span></div>
   <section class="panel">
-    <h2>Term structure, three strikes across four expiries</h2>
     <p class="sub">Implied vol at the same strike for October, December, March and June. The 20% out-of-the-money strike is nearly flat across time, which is why longer-dated puts cost so little extra per day of cover. At the money, vol rises with tenor: the market prices more uncertainty further out.</p>
-    <div class="grid g2">
-      <div class="chart"><h3>SMH</h3><div id="termSMH"></div></div>
-      <div class="chart"><h3>NVDA</h3><div id="termNVDA"></div></div>
+    <div class="g2c">
+      <div class="chart"><h3 style="margin-top:0">SMH</h3><div id="termSMH"></div></div>
+      <div class="chart"><h3 style="margin-top:0">NVDA</h3><div id="termNVDA"></div></div>
     </div>
-    <div class="legend"><span><i style="background:var(--green)"></i>At the money</span><span><i style="background:var(--blue)"></i>10% out of the money</span><span><i style="background:var(--red)"></i>20% out of the money</span><span><i class="dash" style="color:var(--amber)"></i>Model, same strike</span></div>
+    <div class="legend"><span><i style="background:var(--g)"></i>At the money</span><span><i style="background:var(--b)"></i>10% out of the money</span><span><i style="background:var(--r)"></i>20% out of the money</span><span><i class="dash" style="color:var(--a)"></i>Model, same strike</span></div>
   </section>
 
+  <div class="sec"><span class="idx">05</span><h2>A year of vol</h2><span class="rule"></span><span class="tag">VXN · VIX · realised · SKEW</span></div>
   <section class="panel">
-    <h2>How vol has moved over the past year</h2>
     <p class="sub">IBKR does not serve historical option chains, so single-name IV history is not available directly. Three good proxies are: VXN (Nasdaq-100 implied vol index), VIX, and the realised vol of SMH and NVDA themselves. The CBOE SKEW index, below, tracks how much the S&amp;P market pays up for tail puts specifically.</p>
-    <div class="chart"><h3>Implied vol indices and 21-day realised vol, annualised %</h3><div id="histVol"></div></div>
-    <div class="legend"><span><i style="background:var(--amber)"></i>VXN</span><span><i style="background:var(--ink-3)"></i>VIX</span><span><i style="background:var(--green)"></i>SMH realised 21d</span><span><i style="background:var(--blue)"></i>NVDA realised 21d</span><span><i style="background:var(--red);width:6px;height:6px;border-radius:50%"></i>Today's implied vol, SMH and NVDA</span></div>
-    <div class="chart" style="margin-top:14px"><h3>CBOE SKEW index: demand for S&amp;P tail puts</h3><div id="histSkew"></div></div>
-    <div class="legend"><span><i style="background:var(--amber)"></i>SKEW</span><span><i class="dash" style="color:var(--ink-3)"></i>1-year median</span></div>
+    <div class="chart"><h3 style="margin-top:0">Implied vol indices and 21-day realised vol, annualised %</h3><div id="histVol"></div></div>
+    <div class="legend"><span><i style="background:var(--a)"></i>VXN</span><span><i style="background:var(--ink3)"></i>VIX</span><span><i style="background:var(--g)"></i>SMH realised 21d</span><span><i style="background:var(--b)"></i>NVDA realised 21d</span><span><i class="dot" style="background:var(--r)"></i>Today's implied vol, SMH and NVDA</span></div>
+    <div class="chart" style="margin-top:14px"><h3 style="margin-top:0">CBOE SKEW index: demand for S&amp;P tail puts</h3><div id="histSkew"></div></div>
+    <div class="legend"><span><i style="background:var(--a)"></i>SKEW</span><span><i class="dash" style="color:var(--ink3)"></i>1-year median</span></div>
   </section>
 
+  <div class="sec"><span class="idx">06</span><h2>The same put in different vol regimes</h2><span class="rule"></span><span class="tag">trough · today · peak</span></div>
   <section class="panel">
-    <h2>What the same put costs in different vol regimes</h2>
     <p class="sub">The 20% out-of-the-money December put, repriced with the whole surface scaled to where VXN sat at its 1-year peak (27 March 2026) and trough (24 December 2025). This is a proxy: single-name vol does not move one-for-one with VXN, but the ratio is a fair guide to how far the premium can swing.</p>
     <div class="scroll"><table class="out" id="regime"></table></div>
     <div class="note"><b>Reading it.</b> Today's price sits in the lower third of the past year's range. Had you bought the same puts in late March, they would have cost roughly three times as much. If vol keeps grinding lower, the downside on premium from here is about 60%, not 300%. The asymmetry favors owning vol, not selling it.</div>
   </section>
 
+  <div class="sec"><span class="idx">07</span><h2>Model against market, strike by strike</h2><span class="rule"></span><span class="tag">the fit</span></div>
   <section class="panel">
-    <h2>Model against market, strike by strike</h2>
     <p class="sub">The Put Desk's skew-calibrated surface next to the real quotes it was fitted to. SMH runs about 1.5 to 2 vol points rich in the model, which makes the desk's SMH premiums roughly 10 to 15% conservative. NVDA is within a vol point everywhere.</p>
     <div class="scroll"><table class="out" id="mvm"></table></div>
   </section>
 
+  <div class="sec"><span class="idx">08</span><h2>So is it expensive?</h2><span class="rule"></span></div>
   <section class="panel">
-    <h2>So is it expensive?</h2>
-    <ul>
+    <ul class="verdicts">
       <li><b>Not by level.</b> SMH 30-day implied vol is in the 25th percentile of its 52-week range and NVDA is in the 1st. Both trade below their own realised vol. VXN is in the 35th percentile of its year. You are buying vol cheaper than it has been for most of the past twelve months.</li>
       <li><b>Yes by skew, and that is normal.</b> The 20% out-of-the-money strike carries 5 to 6 vol points more than at the money on both names. That is what makes a 430 SMH put cost 1.3% of spot for 107 days. Skew is the price of the crash you are trying to own, and it is not unusually steep: SKEW is near its 1-year median.</li>
       <li><b>The feel of expense comes from the payoff shape.</b> A 20% out-of-the-money put needs the complex down more than 21% before it pays a cent at expiry. That is why the desk favors spreads, which sell the even richer deeper strike back. The cost of the position is small; the probability it expires worthless is high. Those are different things.</li>
@@ -127,6 +133,10 @@
     </ul>
   </section>
 </div>
+
+<script src="assets/three.min.js"></script>
+<script src="assets/scene.js"></script>
+<script src="assets/volsurf.js"></script>
 <script>
 const D = {"asof":"2026-09-02","names":{"SMH":{"S":541.77,"iv30":32.5,"rv30":42.8,"pct52":25,"pct26":2.4,"pct13":4.7,"beta":1,"smile":[{"K":540,"mny":0.9967329309485575,"bid":36,"ask":37.3,"mid":36.65,"ivMid":0.3496829852255151,"ivBid":0.3440440408027978,"ivAsk":0.3553221760183849,"ivModel":0.36071893644504593,"pxModel":37.92202549810517},{"K":515,"mny":0.9505878878490873,"bid":24.5,"ask":28.1,"mid":26.3,"ivMid":0.3584354974833234,"ivBid":0.34160642840382105,"ivAsk":0.3751904526113399,"ivModel":0.37401107735473976,"pxModel":27.973064644908646},{"K":485,"mny":0.8952138361297229,"bid":16.05,"ask":17.75,"mid":16.9,"ivMid":0.37037876750431487,"ivBid":0.3609840533900025,"ivAsk":0.37968779321443147,"ivModel":0.39100004616908185,"pxModel":18.792562932752475},{"K":460,"mny":0.8490687930302527,"bid":10.8,"ask":12.25,"mid":11.525,"ivMid":0.3850491309827637,"ivBid":0.3752759196999691,"ivAsk":0.3946523951460015,"ivModel":0.4062718668229649,"pxModel":13.142898428983514},{"K":430,"mny":0.7936947413108885,"bid":6.6,"ask":7.75,"mid":7.175,"ivMid":0.40651575080333724,"ivBid":0.3960968902284514,"ivAsk":0.416622169728592,"ivModel":0.4263487438766319,"pxModel":8.31870727566124},{"K":405,"mny":0.7475496982114181,"bid":4.3,"ask":5.3,"mid":4.8,"ivMid":0.4273730154660743,"ivBid":0.4153072047267722,"ivAsk":0.4388859480465902,"ivModel":0.44496450317268416,"pxModel":5.57273425238472},{"K":380,"mny":0.7014046551119479,"bid":2.64,"ask":3.85,"mid":3.245,"ivMid":0.4521991814141796,"ivBid":0.4320165880557264,"ivAsk":0.47054959219195824,"ivModel":0.4658024906635454,"pxModel":3.6885778833417397},{"K":350,"mny":0.6460306033925836,"bid":1.25,"ask":2.81,"mid":2.0300000000000002,"ivMid":0.48530903783593315,"ivBid":0.44409927027505636,"ivAsk":0.5182303924698675,"ivModel":0.49464715509474716,"pxModel":2.237149050797189},{"K":325,"mny":0.5998855602931134,"bid":1,"ask":1.8,"mid":1.4,"ivMid":0.5174129676945183,"ivBid":0.48921532273734314,"ivAsk":0.5410909146674006,"ivModel":0.5229040880363744,"pxModel":1.4875008693236822}],"term":{"430":[{"days":44,"mid":1.75,"iv":0.43011174020502885,"ivModel":0.43785068977813146},{"days":107,"mid":7.175,"iv":0.40651575080333724,"ivModel":0.4263487438766319},{"days":198,"mid":15.25,"iv":0.40104074223078556,"ivModel":0.42737048878631817},{"days":288,"mid":22.75,"iv":0.4031029153361083,"ivModel":0.43074635310861625}],"485":[{"days":44,"mid":6.275,"iv":0.36308269844007457,"ivModel":0.38364821718456155},{"days":107,"mid":16.9,"iv":0.37037876750431487,"ivModel":0.39100004616908185},{"days":198,"mid":28.825,"iv":0.3777123034229959,"ivModel":0.40094867188702593},{"days":288,"mid":39.325,"iv":0.3897950955975109,"ivModel":0.40855718290974746}],"540":[{"days":44,"mid":21.525,"iv":0.31652080450953013,"ivModel":0.3365407928460137},{"days":107,"mid":36.65,"iv":0.3496829852255151,"ivModel":0.36071893644504593},{"days":198,"mid":50.525000000000006,"iv":0.3633590659542075,"ivModel":0.3786344815684707},{"days":288,"mid":62.325,"iv":0.3792147472359141,"ivModel":0.39002047723095046}]},"K20":430,"now":{"px":7.175,"iv":0.40651575080333724},"cf":{"scale":1.5273224043715845,"ivPeak":0.6208806139318729,"pxPeak":22.01462864327773,"pxLo":2.9703071648092987,"ivLo":0.31840031483685793}},"NVDA":{"S":216.78,"iv30":31.7,"rv30":39.4,"pct52":1.2,"pct26":1.6,"pct13":3.1,"beta":1.1,"smile":[{"K":215,"mny":0.9917889104160901,"bid":14.85,"ask":15.15,"mid":15,"ivMid":0.36854570509250273,"ivBid":0.3652776643533676,"ivAsk":0.3718137391030074,"ivModel":0.35325465377402615,"pxModel":14.298164011719464},{"K":205,"mny":0.945659193652551,"bid":10.6,"ask":10.95,"mid":10.774999999999999,"ivMid":0.3744388476236633,"ivBid":0.3703286606716293,"ivAsk":0.3785444866119888,"ivModel":0.3666165870504037,"pxModel":10.442123183136957},{"K":195,"mny":0.8995294768890119,"bid":7.4,"ask":7.65,"mid":7.525,"ivMid":0.383199476529401,"ivBid":0.3798523038516348,"ivAsk":0.3865375936067038,"ivModel":0.3807714049550336,"pxModel":7.434289485094467},{"K":185,"mny":0.8533997601254728,"bid":5,"ask":5.2,"mid":5.1,"ivMid":0.39382857612060085,"ivBid":0.3906036749445423,"ivAsk":0.39703702481916303,"ivModel":0.3959311754759271,"pxModel":5.165476370342937},{"K":175,"mny":0.8072700433619338,"bid":3.3,"ask":3.45,"mid":3.375,"ivMid":0.40690509703960076,"ivBid":0.4038423190265774,"ivAsk":0.4099441155652064,"ivModel":0.41236519721358417,"pxModel":3.510158909099264},{"K":165,"mny":0.7611403265983947,"bid":2.18,"ask":2.27,"mid":2.225,"ivMid":0.4242919450136676,"ivBid":0.4218779502817669,"ivAsk":0.4266852097579429,"ivModel":0.4304183531426891,"pxModel":2.3409538321352663},{"K":150,"mny":0.6919457514530861,"bid":1.16,"ask":1.21,"mid":1.185,"ivMid":0.4564675639339344,"ivBid":0.45433470659182507,"ivAsk":0.4585772702651487,"ivModel":0.4615458464660565,"pxModel":1.24563299424082},{"K":140,"mny":0.645816034689547,"bid":0.79,"ask":0.85,"mid":0.8200000000000001,"ivMid":0.4865084656777132,"ivBid":0.48301499274339366,"ivAsk":0.48993096019145077,"ivModel":0.4859120440874375,"pxModel":0.8148337528184779},{"K":130,"mny":0.5996863179260079,"bid":0.54,"ask":0.63,"mid":0.585,"ivMid":0.5216144530031037,"ivBid":0.5144394988541015,"ivAsk":0.5284676697340291,"ivModel":0.514179481856,"pxModel":0.5384096445237274}],"term":{"175":[{"days":44,"mid":0.865,"iv":0.424383133867811,"ivModel":0.4218184079740595},{"days":107,"mid":3.375,"iv":0.40690509703960076,"ivModel":0.41236519721358417},{"days":198,"mid":6.9,"iv":0.4030585910330222,"ivModel":0.41419777222936677},{"days":288,"mid":9.95,"iv":0.40305893336420984,"ivModel":0.4178869154570393}],"195":[{"days":44,"mid":2.625,"iv":0.3592292706781518,"ivModel":0.37327403289617744},{"days":107,"mid":7.525,"iv":0.383199476529401,"ivModel":0.3807714049550336},{"days":198,"mid":12.525,"iv":0.3898983310443497,"ivModel":0.3906297378560913},{"days":288,"mid":16.375,"iv":0.3939157931537619,"ivModel":0.3981242637657061}],"215":[{"days":44,"mid":8.399999999999999,"iv":0.32675984098088495,"ivModel":0.33046318559777166},{"days":107,"mid":15,"iv":0.36854570509250273,"ivModel":0.35325465377402615},{"days":198,"mid":20.775,"iv":0.38109127387020125,"ivModel":0.3703544316342729},{"days":288,"mid":25.1,"iv":0.3887760086932136,"ivModel":0.3812824612246421}]},"K20":175,"now":{"px":3.375,"iv":0.40690509703960076},"cf":{"scale":1.5273224043715845,"ivPeak":0.621475271161576,"pxPeak":9.696503951749825,"pxLo":1.489524261353047,"ivLo":0.31870526726234666}}},"hist":{"dates":["2025-09-03","2025-09-04","2025-09-05","2025-09-08","2025-09-09","2025-09-10","2025-09-11","2025-09-12","2025-09-15","2025-09-16","2025-09-17","2025-09-18","2025-09-19","2025-09-22","2025-09-23","2025-09-24","2025-09-25","2025-09-26","2025-09-29","2025-09-30","2025-10-01","2025-10-02","2025-10-03","2025-10-06","2025-10-07","2025-10-08","2025-10-09","2025-10-10","2025-10-13","2025-10-14","2025-10-15","2025-10-16","2025-10-17","2025-10-20","2025-10-21","2025-10-22","2025-10-23","2025-10-24","2025-10-27","2025-10-28","2025-10-29","2025-10-30","2025-10-31","2025-11-03","2025-11-04","2025-11-05","2025-11-06","2025-11-07","2025-11-10","2025-11-11","2025-11-12","2025-11-13","2025-11-14","2025-11-17","2025-11-18","2025-11-19","2025-11-20","2025-11-21","2025-11-24","2025-11-25","2025-11-26","2025-11-28","2025-12-01","2025-12-02","2025-12-03","2025-12-04","2025-12-05","2025-12-08","2025-12-09","2025-12-10","2025-12-11","2025-12-12","2025-12-15","2025-12-16","2025-12-17","2025-12-18","2025-12-19","2025-12-22","2025-12-23","2025-12-24","2025-12-26","2025-12-29","2025-12-30","2025-12-31","2026-01-02","2026-01-05","2026-01-06","2026-01-07","2026-01-08","2026-01-09","2026-01-12","2026-01-13","2026-01-14","2026-01-15","2026-01-16","2026-01-20","2026-01-21","2026-01-22","2026-01-23","2026-01-26","2026-01-27","2026-01-28","2026-01-29","2026-01-30","2026-02-02","2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-09","2026-02-10","2026-02-11","2026-02-12","2026-02-13","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-20","2026-04-21","2026-04-22","2026-04-23","2026-04-24","2026-04-27","2026-04-28","2026-04-29","2026-04-30","2026-05-01","2026-05-04","2026-05-05","2026-05-06","2026-05-07","2026-05-08","2026-05-11","2026-05-12","2026-05-13","2026-05-14","2026-05-15","2026-05-18","2026-05-19","2026-05-20","2026-05-21","2026-05-22","2026-05-26","2026-05-27","2026-05-28","2026-05-29","2026-06-01","2026-06-02","2026-06-03","2026-06-04","2026-06-05","2026-06-08","2026-06-09","2026-06-10","2026-06-11","2026-06-12","2026-06-15","2026-06-16","2026-06-17","2026-06-18","2026-06-22","2026-06-23","2026-06-24","2026-06-25","2026-06-26","2026-06-29","2026-06-30","2026-07-01","2026-07-02","2026-07-06","2026-07-07","2026-07-08","2026-07-09","2026-07-10","2026-07-13","2026-07-14","2026-07-15","2026-07-16","2026-07-17","2026-07-20","2026-07-21","2026-07-22","2026-07-23","2026-07-24","2026-07-27","2026-07-28","2026-07-29","2026-07-30","2026-07-31","2026-08-03","2026-08-04","2026-08-05","2026-08-06","2026-08-07","2026-08-10","2026-08-11","2026-08-12","2026-08-13","2026-08-14","2026-08-17","2026-08-18","2026-08-19","2026-08-20","2026-08-21","2026-08-24","2026-08-25","2026-08-26","2026-08-27","2026-08-28","2026-08-31","2026-09-01"],"vxn":[19.69,18.79,18.44,18.35,18.22,18.62,18.23,18.18,19.12,19.57,19.02,18.86,18.74,19.42,20.13,19.93,20.54,19.33,19.87,20,19.87,20.01,20.08,20.4,20.82,20.02,20.04,25.23,22.8,24.28,24.42,28.26,24.97,22.64,22.59,23.3,21.72,20.61,20.5,21.31,21.76,21.66,21.99,21.73,23.3,22.6,24.64,24.58,22.62,22.67,23.06,25.88,26.15,28.16,30.51,29.3,32.72,28.95,25.57,23.67,22.26,21.17,22.06,21.28,20.65,20.19,19.62,20.75,20.76,19.67,18.4,20.62,20.71,20.19,21.78,20.72,18.52,17.85,17.47,17.2,17.38,18.39,18.95,19.56,19.75,20.01,19.53,20.03,20.15,19.06,19.53,20.05,20.96,20.2,20.29,24.26,21.19,20.08,20.37,20.43,20.55,20.37,21.44,22.52,21.23,23.45,26.01,29.19,24.3,23.42,23.46,23.26,26.87,26.37,25.98,24.96,25.64,24.23,26.36,24.82,22.94,23.61,24.52,25.4,27.51,24.87,26,31.44,27.69,27.33,26.82,29.83,29.87,26.32,24.66,27.72,26.9,29.2,27.98,28.74,27.65,29.86,33.54,33.26,28.24,27.56,27.04,27.39,28.43,25.24,23.5,23.09,22.19,21.8,22.25,22.18,21.57,22.93,23.8,23.58,23.32,23.38,23.08,23.24,23.76,21.79,21.92,23.04,22.46,23.58,23.15,23.76,24.74,24.13,24.59,24.08,25.33,24.21,24.09,23.71,22.74,22.82,23.9,23.39,22.92,22.58,23.18,23.27,23.84,23.22,30.47,27.12,29.78,32.68,30.44,27.27,25.92,26.95,28.56,26.31,27.67,32.37,30.18,30.91,30.82,29.37,27.11,27.69,27.98,26.81,27.92,27.86,26.91,24.89,27.3,26.28,25.65,27.34,29.03,28.53,26.66,26.74,28.06,28.39,28.65,28.61,30.84,27.55,26,24.77,25.48,24.15,23.95,22.82,23.04,22.38,20.97,21.23,20.72,21.51,22.56,22.04,23.26,21.98,22.69,21.79,21.42,20.24,19.92,20.18,21.96],"vix":[16.35,15.3,15.18,15.11,15.04,15.35,14.71,14.76,15.69,16.36,15.72,15.7,15.45,16.1,16.64,16.18,16.74,15.29,16.12,16.28,16.29,16.63,16.65,16.37,17.24,16.3,16.43,21.66,19.03,20.81,20.64,25.31,20.78,18.23,17.87,18.6,17.3,16.37,15.79,16.42,16.92,16.91,17.44,17.17,19,18.01,19.5,19.08,17.6,17.28,17.51,20,19.83,22.38,24.69,23.66,26.42,23.43,20.52,18.56,17.21,16.35,17.24,16.59,16.08,15.78,15.41,16.66,16.93,15.77,14.85,15.74,16.5,16.48,17.62,16.87,14.91,14.08,14,13.47,13.6,14.2,14.33,14.95,14.51,14.9,14.75,15.38,15.45,14.49,15.12,15.98,16.75,15.84,18.84,20.09,16.9,15.64,16.09,16.15,16.35,16.35,16.88,17.44,16.34,18,18.64,21.77,17.76,17.36,17.79,17.65,20.82,21.2,20.29,19.62,20.23,19.09,21.01,19.55,17.93,18.63,19.86,21.44,23.57,21.15,23.75,29.49,25.5,24.93,24.23,27.29,27.19,23.51,22.37,25.09,24.06,26.78,26.15,26.95,25.33,27.44,31.05,30.61,25.25,24.54,23.87,24.17,25.78,21.04,19.49,19.23,19.12,18.36,18.17,17.94,17.48,18.87,19.5,18.92,19.31,18.71,18.02,17.83,18.81,16.89,16.99,18.29,17.38,17.39,17.08,17.19,18.38,17.99,17.87,17.26,18.43,17.82,18.06,17.44,16.76,16.7,17.01,16.29,15.74,15.32,16.05,15.77,16.06,15.4,21.51,18.92,19.87,22.22,19.44,17.68,16.2,16.41,18.44,16.4,17.28,19.49,18.63,18.89,18.41,17.65,16.45,16.59,15.81,15.57,16.13,16.9,15.84,15.03,17.16,16.5,15.67,16.73,18.77,18.65,17.05,16.64,18.7,18.58,18.67,18.21,20.66,17.09,15.99,15.86,16.5,15.81,15.15,14.9,15.46,15.28,14.55,14.63,14.25,15.19,15.84,14.89,16.01,15.13,15.85,15.45,15.21,14.51,14.43,14.92,16.34],"skew":[150.22,153.96,148.16,148.82,150.93,151.92,147.63,149.49,152.11,148.21,146.37,148.19,146.97,145.46,146.53,145.87,145.89,141.51,143.03,143.44,143.68,145.93,144.65,142.5,145.22,145.76,145.34,138.86,142.81,146.48,144.98,147.14,147.63,151.31,149.95,152.85,154.34,153.49,148.5,140.37,139.45,141.15,142.78,141.99,144.01,143.64,143.54,141.27,142.94,143.45,138.57,142.49,137.93,140.9,142.98,143.05,144.96,148.34,148.6,151.68,145.04,143,144.86,144.94,149.23,148.91,148.83,150.63,150.32,147.55,148.32,153.59,161.86,156.99,153.49,155.38,155.87,159.93,160.53,160.53,151.45,150.47,148.33,148.7,141.86,142.45,146.23,143.57,147.08,146.04,149.75,151.6,152.52,151.57,153.59,154.96,144.41,141.31,144.02,148.1,147.25,144.98,143.74,143.65,146.56,143.85,143.16,137.16,140.31,145.23,145.71,143.78,142.5,139.35,140.28,139.17,141.19,145.52,141.43,141.94,146.05,146.57,146.67,151.78,152.83,152.87,153.95,151.8,157.98,154.46,152.44,139.94,137.76,141.49,145.04,136.54,138.26,139.12,142.02,142.63,140.88,143.99,139,142.23,145.45,143.77,146.95,147.6,148.45,150.36,143.27,144.18,156.93,149.94,139.23,140.74,141.82,141.9,140.91,140.84,139.59,139.08,139.64,138.16,141.88,143.33,141.38,141.74,138.74,135.42,136.11,138.21,140.21,139.41,141.51,139.32,145.77,138.4,135.5,132.31,136.96,137.39,139.04,138.57,139.52,144.18,142.46,143.24,136.86,142.15,152.25,145,141.97,143.08,142.98,142.6,144.32,142.66,142.62,146.72,141.85,143.14,145.3,139.89,139.4,144.46,149.6,154.82,150.02,145.38,145.74,149.79,144.67,144.27,145.69,145.13,148.51,145.72,147.28,146.05,151.66,150.19,145.95,147.28,146.6,142.98,139.55,139.9,141.23,139.96,126.41,133.32,134.73,132.57,137.13,135.59,136.54,134.37,138.36,142.91,143.6,142.93,143.23,143.9,145.64,143.27,142.96,144.05,149.77,148.53,149.23],"smhRV":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,15.909409815342451,16.38632177317496,16.8696107438754,18.973054715280433,20.157300579840783,20.384507163374227,30.10589777668376,32.99599891317515,33.916589042626285,34.58580436918768,34.34742548399697,32.455237879197774,32.46993526968056,32.14032927180502,33.03493405150652,33.41315302137498,33.75493402797707,34.44514146537125,34.44965316287334,34.54448316736494,34.607250203492995,34.4964333283863,34.416080539562714,36.59454128050292,36.345440148308995,36.429523027440084,36.54873844594264,31.13085564768777,29.144850383728592,28.462010848785056,29.548507990181385,29.514219473313265,29.88434923788761,30.27159780053067,30.995219906945316,33.62181282350096,32.922162897684245,35.18336669693576,33.96415150410136,34.81844583276142,34.70825400044542,34.501672833882765,35.12976120022495,35.33172618599462,32.96379953162649,32.45480439668176,31.446915741248432,31.21695542822338,29.952411282260112,29.011912660443095,33.11315766274812,31.34751342725523,31.373826912694426,33.559595298703776,33.616162736069384,34.124093064895845,30.116765718621963,30.15248842730509,27.64248072643159,27.644085291973187,26.923391621435748,26.683229271721775,26.906198141687497,28.8664868824714,28.766579252270553,29.70978959349859,29.852603378316545,30.31118483443293,31.497231499227162,31.251307369312048,31.02076078245287,26.104994681633293,26.49693518613419,26.369602354974216,24.339006476013108,24.887326997057258,24.033472889020217,24.361768928634252,24.46000524098853,25.071309753114377,25.75190468449291,25.51705736181229,28.897036153552115,28.539088805175545,28.355102679847178,31.68783089235489,30.356277067095316,35.20647370019827,34.780774324109295,33.861868021853574,34.713069315680364,35.64859988678128,35.47987199328247,34.891201004025056,34.96847162338592,33.779535022605586,32.615706612839894,32.69304900170515,32.889504497547364,33.1766584284212,34.775928496141326,34.16370340688388,34.1466483437757,34.6585760717966,35.19794238239982,34.26138039075349,33.98117980710397,36.052864302921584,31.314377383151882,31.17842614762792,32.99729410749856,31.636060511408665,31.669074394436674,31.763735586885318,31.84563108691536,31.51415153662923,32.53467605395342,32.87467386220023,33.06944067050206,32.84927829570214,35.33727196790449,34.17452514405947,35.283254377100306,40.938184193306384,39.70512270231392,39.05439787151186,39.071236055130065,36.738719709683046,39.487760146466734,39.751290140303595,39.89797102068924,37.8184838846441,37.940429961714,37.82261459127111,37.83204924807394,37.737946001070725,37.81102842036113,35.95666549695244,36.31470252930388,36.31385487586208,38.78594385002678,33.24302311995353,34.90408030243567,31.082423884111243,27.522405702494684,27.43824961094089,27.880949455468617,28.559265609676082,31.16959856650125,29.502225181718046,31.90615589868645,31.927964814495947,34.61626989315166,34.62870559612527,34.48333732998652,38.426512284881134,39.35167341063651,39.46030470638537,40.64147054245931,40.22436258654599,40.277822017437366,39.59142130727953,40.03489979989076,37.71421101266331,37.79477877489913,37.80448587576793,39.18096135279978,38.76279577631744,39.138582630030434,50.31574500685804,52.220780582701444,50.19575109189739,51.360624743338605,55.02345150387836,54.938233961114015,56.481542109432695,57.56394167138929,57.01262531189022,59.26487372757905,58.44939762891024,64.51390202465092,64.47754538705071,63.530551012639535,65.05367810514588,65.90133395084138,66.90750508642166,69.75252564510251,70.11923747709727,70.44863903811576,71.36218631389795,63.56846281513017,61.931972414584415,61.780526013298854,62.38830657125685,58.78998873682069,58.65142596703009,57.521177577344154,55.78163634215825,55.52688248486392,54.09487433348181,53.798141210579196,48.44814385182662,49.49649359796655,48.38798031186032,47.97861806973895,47.84902978998206,52.21012142297297,49.68713643765548,47.84915734748091,51.14801423575139,49.61937912487946,49.10598576223098,48.80796892751359,49.23662584820634,47.3075458104037,47.052140360743444,46.833478660828284,44.91620248980403,44.20932158759286,46.73259260159016,44.40470215587885,44.37660808613152,44.254885418789684,43.60473087358395,43.29069067117541,41.3940200081254,38.1545869996634,34.11989295657562,34.15918798404102,34.833242501328016],"nvdaRV":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,30.43331665018505,30.67873762916667,29.11990056211141,29.21662515879051,29.6164814614501,27.68095399830528,33.16413462787081,34.32760604943264,37.94011730477402,37.47372676084868,36.24564280171235,34.57214498606292,34.6126624649943,32.14202719568037,30.628460285208813,30.639036486498068,31.437545218616453,32.59541796808338,35.6183079547593,35.906262432668576,36.90538804183788,36.911207571915625,37.21874125478828,39.92351194853255,40.50821616070007,42.02899831511965,41.52222702990864,42.03586481018265,42.64421993705142,39.36082523135917,41.609438502951676,41.84265507634847,42.38375660757473,43.52193624720684,44.453185309704345,45.83889729443746,45.80315623692537,45.68967060359234,45.26802215347109,41.847545232445235,40.18194034569161,40.68721851071821,40.95708653806204,39.86870104603733,39.034206264852926,38.73030071861546,37.33751082742256,37.34483906717337,31.373651994477562,30.287080825094005,31.83432276576165,30.00177216153824,29.395907008663176,31.382613992431118,31.036523516443893,32.42999098150453,30.959038959294578,32.18299464794184,31.61294573753063,30.130463599691666,30.331137836298165,29.54879562016207,29.265342386469197,29.407923700671283,29.164195286836637,28.472379492908363,28.534119923551355,29.041958765391602,29.024371069516974,28.934641476514017,28.402864672477552,26.30225118203771,27.032994689647065,27.070702399850415,28.19813069984305,29.148419060458952,26.300792194479598,26.325465995250102,24.375848651998638,24.668434591631733,25.01962236329766,24.669154941416572,24.780111045340522,26.74562993937161,28.000960618176983,30.084041249162336,30.26143323217663,40.40450684057852,40.58193123623115,40.69590901315382,40.76451507250471,41.18015860093345,41.602272898707994,41.14678537564892,41.499682766931876,38.27976244998988,37.22888939721416,37.24724454256472,36.988807573041896,37.11997191107084,41.857860800265826,43.66818701254155,45.00856622202756,45.134327759128276,44.56305518813811,43.43022616902242,43.04634503437708,43.57882169608134,35.31495851914116,34.309688606286116,34.59494276431395,34.76123540327415,34.949020808522455,34.201015682711045,34.0333387631469,33.586991072148784,35.158547039913024,35.554605557141116,35.26989112883388,36.01531814590169,37.726633497053506,33.89093061317187,31.350035137026904,35.35909618311502,35.27344861634159,34.92474818414871,34.92236744195154,33.37533823093202,32.95902511251351,32.89755159511615,33.95275268970062,33.4627101828688,34.93194773110251,34.7782880282153,34.64220122722797,34.58909745710197,34.17475470441328,31.838597091225406,31.720847581261925,32.37291794404531,34.347648201768635,31.08403859636991,30.379037704866143,30.860488109971918,32.90395629662502,33.14921983845275,33.17723307253973,33.56316283172771,37.74628541414347,37.562289269851505,37.71128427418309,37.43043501469404,37.41111246452896,36.309592812766944,38.31238478897335,42.245535937950635,42.56298912181273,42.76101424933777,42.51186025746502,43.11856393778425,43.40225996701536,41.18953768003726,39.09672388311852,38.81781458512141,38.611209460333995,39.82866025255131,39.873435094372425,42.3601514620162,42.32743604488306,44.39134697005692,44.37232703235169,43.91084427450458,44.89303782514262,45.64882962298064,44.745961306421364,43.779055979971886,41.990021731065774,41.989818484124,43.41210152469307,43.14221530918673,44.873182473151424,44.56746661350031,44.76978384060295,44.91295259389735,45.10441940894631,46.08344131849693,40.303994206221276,40.393660754649055,39.02335417267553,38.43448272109672,34.67218449879382,34.17189557614023,36.85747247607758,36.58933434824655,38.292310337640025,38.296694493487514,37.364037694438565,37.24826967755815,37.00213219857195,36.223892885106935,36.917900029756304,34.21178353583183,34.3409594481164,38.34024954222699,37.88145214580144,39.65174750692467,39.66876322780843,40.70248421588186,41.41404641283879,42.10969375724887,43.30680436205016,41.93742362976482,42.25911841127673,41.83705366202052,39.7026240586034,38.72794588486508,38.73832716215897,37.56145602180665,36.438047626332555,37.70286466889144,37.53563117629407,36.859278373104424,36.59376103375839,37.91308183623609,33.79189999874299,34.45545549681274,41.28797246845364,44.804233442802314,44.159372578774864,43.75434313533187],"smh":[286.43,289.86,293.28,296.52,297.81,300.83,303.93,304.32,307.17,307.21,305.25,316.97,315.71,322.17,321.7,321.11,321.06,321.82,322.66,326.36,333.69,338.24,336.68,343.38,337.05,346.07,345.21,325.34,339.75,333.5,341.78,343.3,342.83,347.22,345.3,338.6,344.8,351.14,359.94,363.11,368.61,363.73,363.02,366.1,352.76,359.5,351.09,348.12,358.79,351.05,355.53,344.82,344.98,340.3,333.29,339.44,325.1,326.13,339.12,340.01,347.71,352.28,352.96,359.43,364.37,361.6,364.42,368.55,369,374.1,370.89,354.12,352.9,351.94,339.24,347.25,356.23,359.7,363.16,364.17,365.86,364.21,363.31,360.13,373.3,377.59,387.62,385.02,378.98,389.22,390.66,391.53,388.35,396.41,400.39,390.39,401.93,402.82,400.09,398.82,407.25,416.63,417.52,403.46,407.97,397.68,382.02,381.07,401.65,406.65,404.76,414.78,406.11,407.72,407.51,412.55,410.2,415.03,412.88,419.16,426.16,412.01,406.37,406.39,391.06,399.1,395.35,380.56,394.37,397.33,401.03,388.13,387.33,393.92,396.88,393.67,394.92,384.74,391.36,394.59,399.02,380.84,374.25,362.53,383.4,391.97,392.32,395.98,399.9,422.92,430.31,436.88,443.34,452,453,454.8,464.16,463.96,464.66,476.83,481.85,506.44,506.26,491.21,499.58,506.72,509.82,506.79,522.69,549.76,540.1,566.54,576.31,561.25,572.46,578.34,556.34,546.16,543.96,564.66,567.88,576.32,602.14,595.5,599.83,598.93,607.81,632.21,637.9,627.53,569.69,598.16,591.01,570.91,609.45,619.96,647.1,616,623.97,659.88,668.91,622.05,618.92,636.88,611.61,631.98,655.89,620.46,592.29,604.3,581.45,593,607.73,611.03,585.62,600.31,590.77,568.92,556.53,558.83,584.08,586.91,580.17,561.19,548.55,529.6,504.22,538.9,540.53,545.46,575.71,569.7,571.48,582.7,569.41,572.93,584.83,589.12,587.82,594.07,569.77,560.92,562.65,560.42,546.8,555.82,555.77,573,553.11,556.63,545.22],"nvda":[170.62,171.66,167.02,168.31,170.76,177.33,177.17,177.82,177.75,174.88,170.29,176.24,176.67,183.61,178.43,176.97,177.69,178.19,181.85,186.58,187.24,188.89,187.62,185.54,185.04,189.11,192.57,183.16,188.32,180.03,179.83,181.81,183.22,182.64,181.16,180.28,182.16,186.26,191.49,201.03,207.04,202.89,202.49,206.88,198.69,195.21,188.08,188.15,199.05,193.16,193.8,186.86,190.17,186.6,181.36,186.52,180.64,178.88,182.55,177.82,180.26,177,179.92,181.46,179.59,183.38,182.41,185.55,184.97,183.78,180.93,175.02,176.29,177.72,170.94,174.14,180.99,183.69,189.21,188.61,190.53,188.22,187.54,186.5,188.85,188.12,187.24,189.11,185.04,184.86,184.94,185.81,183.14,187.05,186.23,178.07,183.32,184.84,187.67,186.47,188.52,191.52,192.51,191.13,185.61,180.34,174.19,171.88,185.41,190.04,188.54,190.05,186.94,182.81,184.97,187.98,187.9,189.82,191.55,192.85,195.56,184.89,177.19,182.48,180.05,183.04,183.34,177.82,182.65,184.77,186.03,183.14,180.25,183.22,181.93,180.4,178.56,172.7,175.64,175.2,178.68,171.24,167.52,165.17,174.4,175.75,177.39,177.64,178.1,182.08,183.91,188.63,189.31,196.51,198.87,198.35,201.68,202.06,199.88,202.5,199.64,208.27,216.61,213.17,209.25,199.57,198.45,198.48,196.5,207.83,211.5,215.2,219.44,220.78,225.83,235.74,225.32,222.32,220.61,223.47,219.51,215.33,214.86,212.6,214.25,211.14,224.36,222.82,214.75,218.66,205.1,208.64,208.19,200.42,204.87,205.19,212.45,207.41,204.65,210.69,208.65,200.04,199,195.74,192.53,194.97,200.09,197.58,194.83,195.55,196.93,204.12,202.78,210.96,203.53,211.8,212.5,207.4,202.81,203.28,207.29,212.06,208.76,206.84,196.51,197.01,190.01,195.04,200.75,206.64,211.94,219.22,218.99,223.96,217.55,217.5,224.09,225.3,225.16,225.01,219.74,217.56,216.85,214.72,208.48,213.05,209.66,227.98,217.55,220.78,217.44]},"vxn":{"now":21.96,"max":33.54,"min":17.2,"maxDate":"2026-03-27","minDate":"2025-12-24","pctile":0.3545816733067729}};
 (() => {
@@ -146,7 +156,7 @@ const k = [
   ['VXN now / 1y range', `${D.vxn.now}`, 'a', `${D.vxn.min} to ${D.vxn.max}, ${Math.round(D.vxn.pctile * 100)}th pct`],
   ['SKEW index', `${D.hist.skew.at(-1)}`, 'a', `1y median 144, range 126 to 162`],
 ];
-$('kpis').innerHTML = k.map(x => `<div class="kpi"><div class="l">${x[0]}</div><div class="v ${x[2]}">${x[1]}</div><div class="s">${x[3]}</div></div>`).join('');
+$('kpis').innerHTML = k.map(x => `<div class="kpi ${x[2]}"><div class="l">${x[0]}</div><div class="v ${x[2]}">${x[1]}</div><div class="s">${x[3]}</div></div>`).join('');
 
 // ---------- SVG helpers ----------
 function frame(W, H, pad, xr, yr, opts = {}) {
@@ -262,6 +272,31 @@ hist();
   }
   $('mvm').innerHTML = `<thead><tr><th>Name</th><th>Strike</th><th>Moneyness</th><th>Bid / ask</th><th>Mid</th><th>Market IV</th><th>Model IV</th><th>Model price</th><th>Model vs mid</th><th>Vol pts</th></tr></thead><tbody>${rows.join('')}</tbody>`;
 })();
+})();
+// ---------- 3D surface ----------
+(() => {
+  const $ = id => document.getElementById(id);
+  const stage = $('volStage'); if (!stage || !window.VolSurf) return;
+  const pct1 = v => (v * 100).toFixed(1) + '%';
+  const ord = n => { n = Math.round(n); const r = n % 100; return n + (r >= 11 && r <= 13 ? 'th' : ['th', 'st', 'nd', 'rd'][Math.min(n % 10, 4) > 3 ? 0 : n % 10] || 'th'); };
+  const intro = { SMH: 'SMH at 32.5 implied against 42.8 realised. The market smile sits 1.5 to 2 points under the sheet across December: the model is conservative here.', NVDA: 'NVDA at 31.7 implied against 39.4 realised, the 1st percentile of its year. The sheet fits within a vol point everywhere.' };
+  function card(p, name) {
+    let html;
+    if (!p) {
+      const d = D.names[name];
+      html = `<div class="t">${name} · snapshot</div><div class="big">IV30 <span>${d.iv30}%</span></div><div class="kv"><i>realised 30d</i><b>${d.rv30}%</b><i>52-week IV pct</i><b>${ord(d.pct52)}</b><i>spot</i><b>${d.S}</b><i>20% OTM Dec put</i><b>${d.K20}P · $${d.now.px.toFixed(2)}</b></div><p class="muted">Click a sphere for the quote behind it.</p>`;
+    } else {
+      const gap = (p.iv - p.ivModel) * 100; const S = D.names[name].S;
+      html = `<button class="close" id="volClose">×</button><div class="t">${name} · ${p.days} days · ${p.src === 'smile' ? 'December smile' : 'term structure'}</div><div class="big">${p.K}P <span>${pct1(p.iv)}</span></div>
+        <div class="kv"><i>moneyness</i><b>${Math.round(p.mny * 100)}% of ${S}</b>${p.bid != null ? `<i>bid / ask</i><b>${p.bid.toFixed(2)} / ${p.ask.toFixed(2)}</b>` : ''}<i>mid</i><b>$${p.mid.toFixed(2)}</b><i>market IV</i><b>${pct1(p.iv)}</b><i>model IV</i><b>${pct1(p.ivModel)}</b><i>gap</i><b style="color:${gap <= 0 ? 'var(--g)' : 'var(--r)'}">${gap > 0 ? '+' : ''}${gap.toFixed(1)} vol pts</b>${p.pxModel != null ? `<i>model price</i><b>$${p.pxModel.toFixed(2)} (${((p.pxModel / p.mid - 1) * 100).toFixed(0)}% vs mid)</b>` : ''}</div>
+        <p class="muted">${gap <= 0 ? 'Market cheaper than the model: the desk overstates this premium.' : 'Market richer than the model: the desk understates this premium.'}</p>`;
+    }
+    $('volCard').innerHTML = html; $('volCardMobile').innerHTML = html;
+    const c = $('volClose'); if (c) c.addEventListener('click', () => vs.select(null));
+  }
+  const vs = VolSurf.init(stage, D, { onSelect: card, onBuild: (name) => { $('volIntro').textContent = intro[name]; card(null, name); document.querySelectorAll('#volName button').forEach(b => b.classList.toggle('on', b.dataset.n === name)); } });
+  $('volName').addEventListener('click', e => { const n = e.target.dataset.n; if (n) vs.build(n); });
+  $('volReset').addEventListener('click', () => vs.resetView());
 })();
 </script>
 </body>

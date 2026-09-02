@@ -326,3 +326,16 @@ Verified in a headless browser (Playwright with Chromium at `/opt/pw-browsers/ch
 - The calibrations are hand-fitted per leg. A small script that pulls each chain and refits `iv` and `sk` would keep the second desk honest over time.
 - ARCC and BXSL are worth re-checking if their put vol ever comes back under 20; the channel is right, the price was wrong.
 - FXY and AEP liquidity should be re-read on the day of execution; the vol thresholds in the execution notes are the cut-offs.
+
+---
+
+## 12. Redesign: cockpit UI and the three 3D views
+
+Added later on 2 September on branch `claude/download-session-files-w54sks`. Both pages now share one design system and the pricing engine drives three interactive 3D scenes. Nothing in the pricing model, the seeds, the research findings or the numbers above changed.
+
+- `assets/hud.css`: the shared stylesheet. Chakra Petch for display, Instrument Sans for body, JetBrains Mono for numbers. Acid green (`--g`) is the first-order colour, amber (`--a`) second-order, ice blue (`--b`) third-order, red (`--r`) for kills and losses. Panels carry corner brackets; `.stage` boxes hold a WebGL canvas with `.hud` overlays; `.reveal` handles the staggered entrance.
+- `assets/three.min.js`: three.js r147 UMD build, vendored (MIT, licence alongside) so the site stays build-free. `assets/scene.js` wraps it: renderer, orbit rig (drag, wheel, pinch, idle auto-rotate), glow sprites, floors, DOM labels projected onto the stage, a loop that pauses off-screen.
+- `assets/desk3d.js`: the desk page's two scenes. **Transmission map**: the complex at the centre, 2° legs on ring two, 3° legs on ring three; column height is the leg's payoff multiple at the scenario drawdown, width its premium share, ghosts are zero-weight legs; edges follow the transmission chain and "Run the cascade" animates the shock with per-tier lags. **Payoff terrain**: P&L / premium over complex drawdown × transmission λ, with the SMH-puts sheet flat in λ, cross-sections at the target and at λ, and a sensitivity table that reports the crossover λ.
+- `assets/volsurf.js`: the vol page's model IV sheet over strike × tenor with every live SMH and NVDA quote as a sphere coloured by market-minus-model.
+- Engine changes in `index.html`: `compute(ctl, deskKey)` evaluates both desks each update (the inactive desk uses its own default expiry, IV cap and minimum premium); `nameMove(row, f, lam)` and `allocate().pnl(f, lam)` accept a beta scale; section numbers renumber to the visible sections.
+- Verified in headless Chromium at 1400 px and 390 px with SwiftShader WebGL: no console errors, no horizontal overflow. Fonts come from Google Fonts and fall back to system faces offline.
